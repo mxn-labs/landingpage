@@ -163,9 +163,64 @@
       .hidden {
         display: none;
       }
+
+      /* Galería */
+      .galeria {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        padding: 20px;
+      }
+      .galeria img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: transform 0.3s;
+      }
+      .galeria img:hover {
+        transform: scale(1.05);
+      }
+
+      /* Modal para imagen ampliada */
+      #modalImagen {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+      }
+      #modalImagen img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 8px;
+      }
+      #cerrarModal {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 40px;
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
     </style>
   </head>
   <body>
+    <!-- MODAL PARA IMAGEN AMPLIADA -->
+    <div id="modalImagen">
+      <button id="cerrarModal" onclick="cerrarImagen()">&times;</button>
+      <img id="imagenAmpliada" />
+    </div>
     <!-- VIDEO POPUP -->
     <div id="videoModal">
       <button id="closeBtn" onclick="cerrarVideo()">&times;</button>
@@ -181,6 +236,24 @@
         document.getElementById("videoModal").classList.add("hidden");
         document.getElementById("video").src = "";
       }
+      function abrirImagen(src) {
+        document.getElementById("imagenAmpliada").src = src;
+        document.getElementById("modalImagen").style.display = "block";
+      }
+
+      function cerrarImagen() {
+        document.getElementById("modalImagen").style.display = "none";
+      }
+
+      // Cerrar con clic fuera de la imagen
+      document.getElementById("modalImagen").onclick = function (e) {
+        if (e.target === this) cerrarImagen();
+      };
+
+      // Cerrar con tecla ESC
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") cerrarImagen();
+      });
     </script>
 
     <header>
@@ -251,5 +324,12 @@
         >
       </div>
     </main>
+
+    <div class="galeria">
+      <img src="images/galeria/galeria-1.png" onclick="abrirImagen(this.src)" />
+      <img src="images/galeria/galeria-2.png" onclick="abrirImagen(this.src)" />
+      <img src="images/galeria/galeria-3.png" onclick="abrirImagen(this.src)" />
+      <img src="images/galeria/galeria-4.png" onclick="abrirImagen(this.src)" />
+    </div>
   </body>
 </html>
